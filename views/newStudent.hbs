@@ -1,0 +1,26 @@
+{{#if error}}
+<div>{{error}}</div>
+{{/if}}
+
+<form action="/cramSchool/new/student" method="POST">
+  <div>
+    <h2>Student Information:</h2>
+  </div>
+  <div>StudentID:</div>
+  <div>
+    <input type="text" name="studentID">
+  </div>
+  <div>Firstname:</div>
+  <div>
+    <input type="text" name="firstName">
+  </div>
+  <div>LastName:</div>
+  <div>
+    <input type="text" name="lastName">
+  </div>
+
+  <div>
+    <button type="submit">Save</button>
+  </div>
+
+</form>

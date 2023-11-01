@@ -1,0 +1,34 @@
+<h2>Educational institution</h2>
+
+{{#if message}}
+<div>{{message}}</div>
+{{/if}}
+
+{{#if error}}
+<div>{{error}}</div>
+{{/if}}
+
+<button type="button" class="btn btn-outline-primary">
+  <a href="/cramSchool/new/student" style="text-decoration:none">Create a new student</a>
+</button>
+
+<button type="button" class="btn btn-outline-primary">
+  <a href="/cramSchool/new/subject" style="text-decoration:none">Create a new subject</a>
+</button>
+
+<ul>
+  {{#each student}}
+  <li>
+    {{this.FiristName}} {{this.LastName}}
+    <button type="button" class="btn btn-outline-primary">
+      <a href="/cramSchool/{{this.id}}/edit/homework" style="text-decoration:none">+</a>
+    </button>
+    <button type="button">
+      <a href="/cramSchool/{{this.id}}/editInfo" style="text-decoration:none">Modify student Info</a>
+    </button>
+    <form action="/cramSchool/{{this.id}}?_method=DELETE" method="post" style="display: inline;">
+      <button type="submit">Delete</button>
+    </form>
+  </li>
+  {{/each}}
+</ul>

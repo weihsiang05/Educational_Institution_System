@@ -1,0 +1,18 @@
+{{#if error}}
+<div>{{error}}</div>
+{{/if}}
+
+<form action="/cramSchool/new/subject" method="POST">
+  <div>
+    <h2>Add new subject</h2>
+  </div>
+  <div>Subject Name:</div>
+  <div>
+    <input type="text" name="subject">
+  </div>
+
+  <div>
+    <button type="submit">Save</button>
+  </div>
+
+</form>

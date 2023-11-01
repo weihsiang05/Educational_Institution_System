@@ -1,0 +1,38 @@
+<h2>Add {{student.FiristName}} {{student.LastName}} Today's homework</h2>
+
+{{#if message}}
+<div>{{message}}</div>
+{{/if}}
+
+<form action="/cramSchool/{{student.id}}/edit/homework/add" method="POST">
+
+  <select name="subjectName" id="subject">
+    {{#each subject}}
+    <option value="{{this.id}}">{{this.subjectName}}</option>
+    {{/each}}
+  </select>
+
+  <button type="submit" class="btn btn-outline-primary">Create</button>
+</form>
+
+<ul>
+  {{#each todayHomework}}
+  <li>
+    <input type="checkbox" name="finishedHomework" id="finishedHomework" value="finished">
+    <label for="finishedHomework">{{"subject.subjectName"}}</label>
+  </li>
+  {{/each}}
+</ul>
+
+
+<div>
+  <button type="button" class="btn btn-outline-primary">
+    <a href="/cramSchool" style="text-decoration:none">Back</a>
+  </button>
+</div>
+
+<div>
+  <button type="button" class="btn btn-outline-primary">
+    <a href="" style="text-decoration:none">Edit</a>
+  </button>
+</div>

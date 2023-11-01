@@ -1,0 +1,23 @@
+<form action="/cramSchool/{{student.id}}?_method=PUT" method="POST">
+
+  <div>
+    <h2>Student Information:</h2>
+  </div>
+  <div>StudentID:</div>
+  <div>
+    <input type="text" name="studentID" value="{{student.id}}">
+  </div>
+  <div>Firstname:</div>
+  <div>
+    <input type="text" name="firstName" value="{{student.FiristName}}">
+  </div>
+  <div>LastName:</div>
+  <div>
+    <input type="text" name="lastName" value="{{student.LastName}}">
+  </div>
+
+  <div>
+    <button type="submit">Save</button>
+  </div>
+
+</form>
