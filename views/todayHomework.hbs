@@ -1,8 +1,6 @@
 <h2>Add {{student.FiristName}} {{student.LastName}} Today's homework</h2>
 
-{{#if message}}
-<div>{{message}}</div>
-{{/if}}
+{{> message}}
 
 <form action="/cramSchool/{{student.id}}/edit/homework/add" method="POST">
 
