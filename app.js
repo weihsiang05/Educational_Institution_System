@@ -4,6 +4,12 @@ const session = require('express-session')
 const app = express()
 const port = 3000
 
+console.log(process.env)
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config()
+}
+
+
 const { engine } = require('express-handlebars')
 const methodOverride = require('method-override')
 
@@ -14,8 +20,12 @@ const router = require('./routes')
 const messageHandler = require('./middlewares/message-handler')
 const errorHandler = require('./middlewares/error-handler')
 
+console.log('en', process.env.NODE_ENV)
+console.log(process.env.SESSION_SECRET)
+
+
 app.use(session({
-  secret: 'ThisIsSecret',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }))
