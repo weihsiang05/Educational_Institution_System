@@ -30,10 +30,15 @@ passport.serializeUser((user, done) => {
   return done(null, { id, name, email })
 })
 
+passport.deserializeUser((user, done) => {
+  done(null, { id: user.id })
+})
+
 const cramSchool = require('./cramSchool')
 const user = require('./user')
+const authHandler = require('../middlewares/auth-handler')
 
-router.use('/cramSchool', cramSchool)
+router.use('/cramSchool', authHandler, cramSchool)
 router.use('/users', user)
 
 router.get('/', (req, res) => {
@@ -55,7 +60,13 @@ router.post('/login', passport.authenticate('local', {
 }))
 
 router.post('/logout', (req, res) => {
+  req.logout((error) => {
+    if (error) {
+      next(error)
+    }
 
+    return res.redirect('/login')
+  })
 })
 
 module.exports = router

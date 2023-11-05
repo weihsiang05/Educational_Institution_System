@@ -8,6 +8,7 @@ const StudentHomework = db.studentHomework
 
 router.get('/', (req, res) => {
   console.log('session', req.session)
+  console.log(req.user)
   try {
     return Student.findAll({
       attributes: ['id', 'FiristName', 'LastName'],
