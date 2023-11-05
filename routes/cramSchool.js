@@ -7,6 +7,7 @@ const Subject = db.subject
 const StudentHomework = db.studentHomework
 
 router.get('/', (req, res) => {
+  console.log('session', req.session)
   try {
     return Student.findAll({
       attributes: ['id', 'FiristName', 'LastName'],
