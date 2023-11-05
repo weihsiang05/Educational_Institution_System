@@ -1,0 +1,28 @@
+<h2>Register</h2>
+
+{{> message}}
+
+<form action="/users" method="post">
+  <div>Name</div>
+  <div>
+    <input type="text" name="name" placeholder="Enter name">
+  </div>
+  <div>Email</div>
+  <div>
+    <input type="text" name="email" placeholder="Enter email">
+  </div>
+  <div>Password</div>
+  <div>
+    <input type="text" name="password" placeholder="Enter password">
+  </div>
+  <div>Comfirm password</div>
+  <div>
+    <input type="text" name="confirmPassword" placeholder="Confirm password">
+  </div>
+
+  <div>
+    <button type="submit">Register</button>
+  </div>
+
+</form>
+<div>Already have an account? <a href="/login">Login</a></div>

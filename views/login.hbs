@@ -1,0 +1,18 @@
+<h2>Login</h2>
+
+{{> message}}
+
+<form action="/login" method="post">
+  <div>Email</div>
+  <div>
+    <input type="text" name="email" placeholder="Enter email">
+  </div>
+  <div>Password</div>
+  <div>
+    <input type="text" name="password" placeholder="Enter password">
+  </div>
+  <div>
+    <button type="submit">Login</button>
+  </div>
+</form>
+<div>No account? <a href="/register">Register</a></div>
