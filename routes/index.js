@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const bcrypt = require('bcryptjs')
 
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
@@ -14,10 +15,19 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (username, password, 
     raw: true
   })
     .then((user) => {
-      if (!user || user.password != password) {
+      /*if (!user || user.password != password) {
         return done(null, false, { type: 'error', message: 'Wrong email or password! Please try again!' })
       }
-      return done(null, user)
+      return done(null, user)*/
+
+      return bcrypt.compare(password, user.password)
+        .then((isMatch) => {
+          if (!isMatch) {
+            return done(null, false, { type: 'error', message: 'Wrong email or password! Please try again!' })
+          }
+
+          return done(null, user)
+        })
     })
     .catch((error) => {
       done(error)

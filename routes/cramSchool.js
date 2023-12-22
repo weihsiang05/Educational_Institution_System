@@ -10,8 +10,14 @@ router.get('/', (req, res) => {
   console.log('session', req.session)
   console.log(req.user)
   try {
+    //Get from passport expanded req.user
+    const userID = req.user.id
+
     return Student.findAll({
       attributes: ['id', 'FiristName', 'LastName'],
+      where: {
+        userId: userID
+      },
       raw: true
     })
       .then((student) => {
@@ -40,13 +46,16 @@ router.get('/new/student', (req, res) => {
 router.post('/new/student', (req, res, next) => {
 
   const student = req.body
+  //Get from passport expanded req.user
+  const userID = req.user.id
 
   return Student.create({
     id: student.studentID,
     FiristName: student.firstName,
     LastName: student.lastName,
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
+    userId: userID
   })
     .then(() => {
       req.flash('success', 'Success to CREATE a student!')
@@ -90,6 +99,8 @@ router.post('/new/subject', (req, res, next) => {
 
 router.get('/:studentID/edit/homework', async (req, res) => {
   const studentId = req.params.studentID
+  //Get from passport expanded req.user
+  const userID = req.user.id
 
   try {
     const student = await Student.findOne({
@@ -98,6 +109,16 @@ router.get('/:studentID/edit/homework', async (req, res) => {
       },
       raw: true
     })
+
+    if (student) {
+      if (student.userId !== userID) {
+        req.flash('error', 'Insufficient permissions!')
+        return res.redirect('/cramSchool')
+      }
+    } else {
+      req.flash('error', 'Do not have this student in the class!')
+      return res.redirect('/cramSchool')
+    }
 
     const subject = await Subject.findAll({
       attributes: ['id', 'subjectName'],
@@ -149,28 +170,46 @@ router.post('/:studentID/edit/homework/add', (req, res) => {
 
 router.get('/:studentID/editInfo', (req, res) => {
   const studentId = req.params.studentID
+  //Get from passport expanded req.user
+  const userID = req.user.id
+
   return Student.findByPk(studentId, {
     attributes: ['id', 'FiristName', 'LastName'],
     raw: true
   })
     .then((student) => {
-      res.render('editStudentInfo', { student });
+      res.render('editStudentInfo', { student })
     })
 })
 
-router.put('/cramSchool/:studentID', (req, res, next) => {
+router.put('/:studentID', (req, res, next) => {
 
   const studentId = req.params.studentID
   const body = req.body
+  //Get from passport expanded req.user
+  const userID = req.user.id
 
-  return Student.update({ id: body.studentID, FiristName: body.firstName, LastName: body.lastName }, {
+  return Student.findOne({
     where: {
       id: studentId
     }
   })
-    .then(() => {
-      req.flash('success', 'Success to UPDATE student information!')
-      res.redirect('/cramSchool')
+    .then((student) => {
+      if (!student) {
+        req.flash('error', 'Do not have this student in the class!')
+        return res.redirect('/cramSchool')
+      }
+
+      if (student.userId !== userID) {
+        req.flash('error', 'Insufficient permissions!')
+        return res.redirect('/cramSchool')
+      }
+
+      return student.update({ id: body.studentID, FiristName: body.firstName, LastName: body.lastName })
+        .then(() => {
+          req.flash('success', 'Success to UPDATE student information!')
+          res.redirect('/cramSchool')
+        })
     })
     .catch((error) => {
       error.errorMessage = 'Fail to UPDATE student information!'
@@ -182,19 +221,33 @@ router.put('/cramSchool/:studentID', (req, res, next) => {
 router.delete('/:studentID', (req, res) => {
 
   const studentId = req.params.studentID
+  //Get from passport expanded req.user
+  const userID = req.user.id
 
-  return Student.destroy({
+  return Student.findOne({
     where: {
       id: studentId
     }
   })
-    .then(() => {
-      req.flash('success', 'Success to DELETE a student!')
-      res.redirect('/cramSchool')
+    .then((student) => {
+      if (!student) {
+        req.flash('error', 'Do not have this student in the class!')
+        return res.redirect('/cramSchool')
+      }
+
+      if (student.userId !== userID) {
+        req.flash('error', 'Insufficient permissions!')
+        return res.redirect('/cramSchool')
+      }
+
+      return student.destroy()
+        .then(() => {
+          req.flash('success', 'Success to DELETE a student!')
+          res.redirect('/cramSchool')
+        })
     })
     .catch((error) => {
       error.errorMessage = 'Fail to DELETE student!'
-      next(error)
     })
 
 })

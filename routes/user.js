@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const bcrypt = require('bcryptjs')
 
 const db = require('../models')
 const Users = db.user
@@ -34,10 +35,11 @@ router.post('/', async (req, res, next) => {
       req.flash('error', 'The email has already been registed!')
       res.redirect('/register')
     } else {
+      const newPassword = await bcrypt.hash(password, 10)
       const creatAccount = Users.create({
         name: name,
         email: email,
-        password: password,
+        password: newPassword,
         createdAt: new Date(),
         updatedAt: new Date()
       })
