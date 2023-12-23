@@ -168,6 +168,31 @@ router.post('/:studentID/edit/homework/add', (req, res) => {
   }
 })
 
+router.post('/:studentID/edit/homework/store', (req, res) => {
+  // try {
+  //   const theHomework = req.body
+  //   const studentID = req.params.studentID
+
+  //   return StudentHomework.create({
+  //     createdAt: new Date(),
+  //     updatedAt: new Date(),
+  //     studentId: studentID,
+  //     subjectId: theHomework.subjectName
+  //   })
+  //     .then(() => {
+  //       req.flash('success', 'Success to add a subject!')
+  //       res.redirect(`/cramSchool/${studentID}/edit/homework`)
+  //     })
+  //     .catch((error) => {
+  //       console.log(error)
+  //       return res.redirect('back')
+  //     })
+  // } catch (error) {
+  //   console.log(error)
+  //   return res.redirect('back')
+  // }
+})
+
 router.get('/:studentID/editInfo', (req, res) => {
   const studentId = req.params.studentID
   //Get from passport expanded req.user

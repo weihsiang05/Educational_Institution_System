@@ -13,14 +13,25 @@
   <button type="submit" class="btn btn-outline-primary">Create</button>
 </form>
 
-<ul>
-  {{#each todayHomework}}
-  <li>
-    <input type="checkbox" name="finishedHomework" id="finishedHomework" value="finished">
-    <label for="finishedHomework">{{"subject.subjectName"}}</label>
-  </li>
-  {{/each}}
-</ul>
+<form action="/cramSchool/{{student.id}}/edit/homework/store" method="POST">
+  <ul>
+    {{#each todayHomework}}
+    <li>
+      {{!-- <input type="checkbox" name="finishedHomework" id="finishedHomework" value="finished"> --}}
+      <label for="finishedHomework">{{"subject.subjectName"}}</label>
+      <select name="status" id="status">
+        <option value="Finished">Finished</option>
+        <option value="Processing">Processing</option>
+        <option value="DidNotFinish">Didn't Finish</option>
+      </select>
+
+    </li>
+    {{/each}}
+  </ul>
+
+  <button type="submit" class="btn btn-outline-primary">Store</button>
+</form>
+
 
 
 <div>
