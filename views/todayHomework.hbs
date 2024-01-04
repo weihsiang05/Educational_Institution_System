@@ -13,17 +13,24 @@
   <button type="submit" class="btn btn-outline-primary">Create</button>
 </form>
 
-<form action="/cramSchool/{{student.id}}/edit/homework/store" method="POST">
+
+<form action="/cramSchool/{{student.id}}/edit/homework/store?_method=PUT" method="POST">
   <ul>
     {{#each todayHomework}}
     <li>
-      {{!-- <input type="checkbox" name="finishedHomework" id="finishedHomework" value="finished"> --}}
-      <label for="finishedHomework">{{"subject.subjectName"}}</label>
-      <select name="status" id="status">
+      <label for="finishedHomework" name="finishedHomework">{{"subject.subjectName"}}</label>
+
+      <input type="hidden" name="subjectId" value={{"subject.id"}}>
+
+      {{!-- <p>{{status}}</p> --}}
+      <select name="status" id={{id}} value={{status}}>
         <option value="Finished">Finished</option>
         <option value="Processing">Processing</option>
-        <option value="DidNotFinish">Didn't Finish</option>
+        <option value="DidNotFinish" selected={{true}}>Did NOT Finish</option>
       </select>
+
+      <button type="button" class="btn btn-outline-danger" onclick="deleteHomework('{{id}}')">Delete</button>
+
 
     </li>
     {{/each}}
@@ -33,9 +40,51 @@
 </form>
 
 
-
 <div>
   <button type="button" class="btn btn-outline-primary">
     <a href="/cramSchool" style="text-decoration:none">Back</a>
   </button>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Add a change event listener to all dropdowns with the name "status"
+    document.querySelectorAll('select[name="status"]').forEach(function (select) {
+      // Get the id of the current dropdown
+      var dropdownId = select.getAttribute('id');
+      console.log(dropdownId)
+      // Get the selected option from local storage based on the dropdown id
+      // If the dropdownId = 38. It will shows like selectedOption38
+      var selectedOption = localStorage.getItem('selectedOption' + dropdownId);
+      console.log(selectedOption)
+      // Set the selected option in the dropdown if it exists in local storage
+      if (selectedOption) {
+        select.value = selectedOption;
+      }
+
+      // Add a change event listener to the dropdown
+      select.addEventListener('change', function () {
+        // Update the selected option in local storage based on the dropdown id
+        localStorage.setItem('selectedOption' + dropdownId, this.value);
+      });
+    });
+
+    // Add a submit event listener to the form
+    /*document.querySelector('form').addEventListener('submit', function () {
+      // Store the selected option for each dropdown in local storage before submitting the form
+      document.querySelectorAll('select[name="status"]').forEach(function (select) {
+        var dropdownId = select.getAttribute('id');
+        localStorage.setItem('selectedOption' + dropdownId, select.value);
+      });
+    });*/
+  });
+
+  function deleteHomework(homeworkId) {
+    console.log(homeworkId)
+    var confirmed = confirm("Are you sure you want to delete this homework?");
+    if (confirmed) {
+      document.querySelector('form').action = `/cramSchool/{{student.id}}/edit/homework/${homeworkId}/delete?_method=DELETE`;
+      document.querySelector('form').submit();
+    }
+  }
+</script>

@@ -1,0 +1,39 @@
+<h2>Add {{student.FiristName}} {{student.LastName}} Parents</h2>
+
+{{> message}}
+
+<form action="/cramSchool/{{student.id}}/edit/studentParent/add" method="POST">
+
+
+  <select name="parentName" id="parent">
+    {{#each parent}}
+    <option value="{{this.id}}">{{this.name}}</option>
+    {{/each}}
+  </select>
+
+  <button type="submit" class="btn btn-outline-primary">Create</button>
+
+  <ul>
+    {{#each findStudentParent}}
+    <li>
+      <label id={{"Parent.id"}} for="parentName" name="parentName">{{"Parent.name"}}</label>
+      <button type="button" class="btn btn-outline-danger" onclick="deleteParent('{{id}}')">Delete</button>
+    </li>
+    {{/each}}
+  </ul>
+
+</form>
+
+<button type="submit" class="btn btn-outline-primary"> <a href="/cramSchool"
+    style="text-decoration:none">Back</a></button>
+
+<script>
+  function deleteParent(parentId) {
+    console.log(parentId)
+    var confirmed = confirm("Are you sure you want to delete the parent?");
+    if (confirmed) {
+      document.querySelector('form').action = `/cramSchool/{{student.id}}/edit/studentParent/${parentId}/delete?_method=DELETE`;
+      document.querySelector('form').submit();
+    }
+  }
+</script>
