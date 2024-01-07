@@ -28,9 +28,9 @@ const router = require('./routes')
 const messageHandler = require('./middlewares/message-handler')
 const errorHandler = require('./middlewares/error-handler')
 const bot = linebot({
-  channelId: '2002401941',
-  channelSecret: 'c5bc3f5dea5ef175ffc8f24b644313aa',
-  channelAccessToken: '8EydrIdF0cuSvRrFw0edPMphirbuGt2i0EBXAeKPrztlqPTdnbinoQKmCW424CIIWKa10BhRNo7exx+PRIdyqbSuDsAg/q31e1ogFonu8fsE/Kwpomu6LGIg/22zsB3YwG/OdbztFNvlxVMX24g96AdB04t89/1O/w1cDnyilFU='
+  channelId: process.env.CHANNEL_ID,
+  channelSecret: process.env.CHANNEL_SECRET,
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 })
 
 bot.on('message', async function (event) {
@@ -186,9 +186,6 @@ bot.on('message', async function (event) {
   }
 
 })
-
-console.log('en', process.env.NODE_ENV)
-console.log(process.env.SESSION_SECRET)
 
 
 app.use(session({
